@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>kromahex</title>
+</head>
+<body>
+
+<p>Red</p>
+<p style="background-color:rgb(255, 0, 0);"><input id="Red" type="number" min="0" max="100" value="0" onChange="myFunction()"></p>
+<p>Yellow</p>
+<p style="background-color:rgb(255, 255, 0);"><input id="Yellow" type="number" min="0" max="100" value="0" onChange="myFunction()"></p>
+<p>Green</p>
+<p style="background-color:rgb(0, 255, 0);"><input id="Green" type="number" min="0" max="100" value="0" onChange="myFunction()"></p>
+<p>Cyan</p>
+<p style="background-color:rgb(0, 255, 255);"><input id="Cyan" type="number" min="0" max="100" value="0" onChange="myFunction()"></p>
+<p>Blue</p>
+<p style="background-color:rgb(0, 0, 255);"><input id="Blue" type="number" min="0" max="100" value="0" onChange="myFunction()"></p>
+<p>Magenta</p>
+<p style="background-color:rgb(255, 0, 255);"><input id="Magenta" type="number" min="0" max="100" value="0" onChange="myFunction()"></p>
+<p><input id="Intensity" type="number" min="0" max="100" value="100" onChange="myFunction()">Intensity</p>
+<p><input id="Saturation" type="number" min="0" max="100" value="100" onChange="myFunction()">Saturation</p>
+
+<button onclick="Reset()" style="background-color:rgb(255, 127, 0);">Reset</button>
+
+<p>DiV4, 2019</p>
+
+<div id="demo" style="height: 10em; width: 10em;"></div>
+<p id="rgb"></p>
+<p id="hex"></p>
+
+<script>
+function lerp (start, end, amt){
+  return (1-amt)*start+amt*end
+}
+
+function rgbToHex(r, g, b) {
+  return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+function myFunction() {
+  var red = document.getElementById("Red").value;
+  var yellow = document.getElementById("Yellow").value;
+  var green = document.getElementById("Green").value;
+  var cyan = document.getElementById("Cyan").value;
+  var blue = document.getElementById("Blue").value;
+  var magenta = document.getElementById("Magenta").value;
+  var intensity = document.getElementById("Intensity").value;
+  var sat = document.getElementById("Saturation").value;
+  var r = (2.25 * red + 2.25 * yellow + 2.25 * magenta)/3 * intensity/25;
+  var g = (2.25 * yellow + 2.25 * green + 2.25 * cyan)/3 * intensity/25;
+  var b = (2.25 * cyan + 2.25 * blue + 2.25 * magenta)/3 * intensity/25;
+  var fr = Math.min(Math.round(lerp((0.2126 * r + 0.7152 * g + 0.0722 * b)/3, r, sat / 100.0)), 255);
+  var fg = Math.min(Math.round(lerp((0.2126 * r + 0.7152 * g + 0.0722 * b)/3, g, sat / 100.0)), 255);
+  var fb = Math.min(Math.round(lerp((0.2126 * r + 0.7152 * g + 0.0722 * b)/3, b, sat / 100.0)), 255);
+  document.getElementById("demo").style.backgroundColor = "rgb(" + fr + "," + fg + "," + fb + ")";
+  document.getElementById("rgb").innerHTML = "RGB: " + fr + ", " + fg + ", "  + fb;
+  document.getElementById("hex").innerHTML = "HEX: " + rgbToHex(fr, fg, fb);
+}
+
+function Reset() {
+	document.getElementById("Red").value = 0;
+	document.getElementById("Yellow").value = 0;
+	document.getElementById("Green").value = 0;
+	document.getElementById("Cyan").value = 0;
+	document.getElementById("Blue").value = 0;
+	document.getElementById("Magenta").value = 0;
+	document.getElementById("Intensity").value = 100;
+	document.getElementById("Saturation").value = 100;
+	myFunction();
+}
+</script>
+
+</body>
+</html>
+
